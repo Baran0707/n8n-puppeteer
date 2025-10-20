@@ -1,6 +1,5 @@
-FROM ghcr.io/n8n-io/n8n:latest  # ← SADECE BU SATIR DEĞİŞTİ
+FROM ghcr.io/n8n-io/n8n:latest
 
-# Aşağısı AYNEN KALSIN:
 USER root
 RUN npm install -g puppeteer-real-browser && \
     apk add --no-cache chromium nss freetype harfbuzz ca-certificates ttf-freefont xvfb
