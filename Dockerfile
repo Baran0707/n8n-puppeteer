@@ -1,4 +1,4 @@
-FROM ghcr.io/n8n-io/n8n:latest
+FROM ghcr.io/n8n-io/n8n:1.93.0
 USER root
 
 RUN ARCH=$(uname -m) && \
