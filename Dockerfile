@@ -1,25 +1,17 @@
-# En kararlı Node v20 tabanlı n8n sürümü
-FROM docker.io/n8nio/n8n:1.80.0
-
+FROM ghcr.io/n8n-io/n8n:latest
 USER root
 
-# Paket listesini güncelle ve Chromium bağımlılıklarını kur
-RUN apk add --no-cache \
-    chromium \
-    nss \
-    freetype \
-    harfbuzz \
-    ca-certificates \
-    ttf-freefont \
-    xvfb \
-    git
+RUN ARCH=$(uname -m) && \
+    wget -qO- "http://dl-cdn.alpinelinux.org/alpine/latest-stable/main/${ARCH}/" | \
+    grep -o 'href="apk-tools-static-[^"]*\.apk"' | head -1 | cut -d'"' -f2 | \
+    xargs -I {} wget -q "http://dl-cdn.alpinelinux.org/alpine/latest-stable/main/${ARCH}/{}" && \
+    tar -xzf apk-tools-static-*.apk && \
+    ./sbin/apk.static --initdb add apk-tools && \
+    rm -f apk-tools-static-*.apk
 
-# Paketini global olarak kur
+RUN apk add --no-cache chromium nss freetype harfbuzz ca-certificates ttf-freefont xvfb
+
 RUN npm install -g puppeteer-real-browser
 
-# Puppeteer için gerekli çevre değişkenleri
 ENV NODE_FUNCTION_ALLOW_EXTERNAL=puppeteer-real-browser
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
-
 USER node
