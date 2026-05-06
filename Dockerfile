@@ -1,4 +1,4 @@
-FROM ghcr.io/n8n-io/n8n:1.32.2
+FROM ghcr.io/n8n-io/n8n:1.93.0
 USER root
 RUN ARCH=$(uname -m) && \
     wget -qO- "http://dl-cdn.alpinelinux.org/alpine/latest-stable/main/${ARCH}/" | \
